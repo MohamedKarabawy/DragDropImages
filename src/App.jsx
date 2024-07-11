@@ -8,11 +8,12 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import styles from './assets/css/App.module.css';
 
-function App() {
+function App({ id }) {
 
 const [selectedImage, setSelectedImage] = useState();
 const [preview, setPreview] = useState();
 const inputRef = useRef();
+const imgRef = useRef(null);
 const contextRef = useRef(null);
 const contextMenuItems = [
   {
@@ -46,13 +47,13 @@ useEffect(() =>
 
 const onImageSelect = e => 
 {
-    if (!e.target.files || e.target.files.length === 0) 
+    if (!e.target.files || e.target.files.length === 0 || !e.target.files[0].type.startsWith('image/')) 
     {
       setSelectedImage(undefined)
         return;
     }
 
-    setSelectedImage(e.target.files[0])
+    setSelectedImage(e.target.files[0]);
 }
 
 const handleDeleteImage = () => 
@@ -162,6 +163,14 @@ const handleDrop = (e) =>
   }
 }
 
+useEffect(() => 
+{
+  if (imgRef.current && preview) 
+  {
+      imgRef.current.src = preview;
+  }
+}, [preview]);
+
   return (
   <div className={styles.Container}>
     <ContextMenu model={contextMenuItems} ref={contextRef} breakpoint="767px" style={{ width: '70px', padding: '12px', fontWeight: 'bold'}} />
@@ -170,8 +179,8 @@ const handleDrop = (e) =>
         <TbDragDrop />
         <span className={styles.DragDropText}>قم بسحب/لصق الصورة وضعها هنا</span>
         </div>
-        <img className={styles.Preview} src={preview} style={selectedImage? {display: 'block'} : {display: 'none'} } />
-        <label htmlFor="ImageUpload" className={styles.ImageUpload}>
+        <img className={styles.Preview} ref={imgRef} src={preview} style={selectedImage? {display: 'block'} : {display: 'none'} } />
+        <label htmlFor={`ImageUpload_${id}`} className={styles.ImageUpload}>
             <IoCloudUpload />
             اختر صورة من جهازك
         </label>
@@ -181,7 +190,7 @@ const handleDrop = (e) =>
               حذف
           </IconContext.Provider>
         </div>
-        <input id="ImageUpload" type="file" ref={inputRef} onChange={onImageSelect} />
+        <input id={`ImageUpload_${id}`}  type="file" ref={inputRef} onChange={onImageSelect} />
       </div>
   </div>
   )
