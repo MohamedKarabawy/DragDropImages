@@ -10,39 +10,38 @@ import PDFIcon from './assets/images/pdf-icon.png';
 
 function DragDropPDF({ id }) {
 
-const [selectedImage, setSelectedImage] = useState();
+const [selectedPDF, setselectedPDF] = useState();
 const [preview, setPreview] = useState();
 const inputRef = useRef();
-const imgRef = useRef(null);
 
 useEffect(() => 
 {
-    if (!selectedImage) 
+    if (!selectedPDF) 
     {
         setPreview(undefined)
         return
     }
 
-    setPreview(selectedImage.name);
+    setPreview(selectedPDF.name);
 
-}, [selectedImage])
+}, [selectedPDF])
 
 const onImageSelect = e => 
 {
     if (!e.target.files || e.target.files.length === 0 || !e.target.files[0].type === 'application/pdf') 
     {
-      setSelectedImage(undefined)
+      setselectedPDF(undefined)
         return;
     }
 
-    setSelectedImage(e.target.files[0]);
+    setselectedPDF(e.target.files[0]);
 }
 
 const handleDeleteFile = () => 
 {
     if (inputRef.current.value) 
     {
-      setSelectedImage(undefined)
+      setselectedPDF(undefined)
 
       setPreview(undefined)
 
@@ -71,35 +70,24 @@ const handleDrop = (e) =>
         setPreview(file.name);
       };
 
-      setSelectedImage(file);
+      setselectedPDF(file);
 
       let container = new DataTransfer(); 
 
       container.items.add(file);
 
       inputRef.current.files = container.files;
-
-      return () => URL.revokeObjectURL(reader.result);
   }
 }
-
-useEffect(() => 
-{
-  if (imgRef.current && preview) 
-  {
-      imgRef.current.src = preview;
-  }
-}, [preview]);
 
   return (
   <div className={styles.Container}>
       <div className={styles.Box} onDrop={handleDrop} onDragOver={handleDragOver}>
-        <div className={styles.DragDrop} style={selectedImage && {display: 'none'}}>
+        <div className={styles.DragDrop} style={selectedPDF && {display: 'none'}}>
         <TbDragDrop />
         <span className={styles.DragDropText}>قم بسحب الملف وضعه هنا</span>
         </div>
-        {/* <img className={styles.Preview} ref={imgRef} src={preview} style={selectedImage? {display: 'block'} : {display: 'none'} } /> */}
-        <div className={styles.PDfContainer} style={selectedImage? {display: 'block'} : {display: 'none'} }>
+        <div className={styles.PDfContainer} style={selectedPDF? {display: 'block'} : {display: 'none'} }>
             <img className={styles.PDFImage} src={PDFIcon} />
             <span className={styles.PDFText}>{preview}</span>
         </div>
@@ -107,7 +95,7 @@ useEffect(() =>
             <IoCloudUpload />
             اختر ملف من جهازك
         </label>
-        <div className={styles.DeleteImage} style={selectedImage? {display: 'block'} : {display: 'none'}} onClick={handleDeleteFile}>
+        <div className={styles.DeleteImage} style={selectedPDF? {display: 'block'} : {display: 'none'}} onClick={handleDeleteFile}>
           <IconContext.Provider value={{ className: styles.DeleteButtonColor }} >
               <FaTrash />
               حذف
