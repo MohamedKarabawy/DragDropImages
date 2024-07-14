@@ -32,9 +32,10 @@
     font-weight: bold;
 }
 
-input[type="file"] {
+input[type="file"] 
+{
     display: none;
-  }
+}
   
 .ImageUpload {
     position: absolute;
@@ -81,6 +82,29 @@ input[type="file"] {
     width: 95%;
     height: 13rem;
     border-radius: 10px;
+}
+
+.PDfContainer
+{
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 85px;
+}
+
+.PDFImage
+{
+    width: 60px;
+    height: 60px;
+}
+
+.PDFText
+{
+    position: relative;
+    bottom: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
 }
 
 .DeleteImage
